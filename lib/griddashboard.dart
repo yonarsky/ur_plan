@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class GridDashboard extends StatelessWidget {
   Items item1 = new Items(
     title: "Kolegium Nauk Humanistycznych",
@@ -35,33 +36,39 @@ class GridDashboard extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                   color: Colors.blue[900], borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    data.event,
-                    style: GoogleFonts.ubuntu(
-                        textStyle: TextStyle(
-                            color: Colors.white24,
-                            fontSize: 48,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    data.title,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(data.title),
+                  duration: Duration(seconds: 2),
+                )),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      data.event,
+                      style: GoogleFonts.ubuntu(
+                          textStyle: TextStyle(
+                              color: Colors.white24,
+                              fontSize: 48,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      data.title,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ),
               ),
             );
           }).toList()),
