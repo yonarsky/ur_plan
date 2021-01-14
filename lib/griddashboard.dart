@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+String collegeName;
+String collegeLetter;
 // ignore: must_be_immutable
 class GridDashboard extends StatelessWidget {
   Items item1 = new Items(
@@ -37,10 +39,11 @@ class GridDashboard extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.blue[900], borderRadius: BorderRadius.circular(10)),
               child: GestureDetector(
-                onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(data.title),
-                  duration: Duration(seconds: 2),
-                )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/college');
+                  collegeName = data.title;
+                  collegeLetter = data.event;
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

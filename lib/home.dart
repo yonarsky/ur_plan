@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'griddashboard.dart';
 
 
-class College extends StatefulWidget {
-  College({Key key, this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
 
 
   final String title;
 
   @override
-  _CollegeState createState() => _CollegeState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _CollegeState extends State<College> {
+class _MyHomePageState extends State<MyHomePage> {
 
 
   @override
@@ -21,16 +21,14 @@ class _CollegeState extends State<College> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
-        title: Text(collegeName),
-        centerTitle: true,
-        elevation: 0,
+        title: Text('Plan zajęć UR'),
       ),
       body: Column(
         children: <Widget>[
           SizedBox(
             height: 40,
           ),
-          Text('x'),
+          GridDashboard()
         ],
       ),
     );
