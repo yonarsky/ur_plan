@@ -10,6 +10,7 @@ class College extends StatefulWidget {
 
   @override
   _CollegeState createState() => _CollegeState();
+
 }
 
 class _CollegeState extends State<College> {
@@ -22,14 +23,8 @@ class _CollegeState extends State<College> {
   ];
 
   bool isLoading;
-  List<Days> daysList;
+  List<Days> daysList = new List();
 
-  @override
-  void initState() {
-    super.initState();
-    isLoading = true;
-    fetchDays();
-  }
 
   void fetchDays() async {
     setState(() => isLoading = true);
@@ -42,7 +37,7 @@ class _CollegeState extends State<College> {
 
   @override
   Widget build(BuildContext context) {
-
+    fetchDays();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
@@ -50,19 +45,19 @@ class _CollegeState extends State<College> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView.builder(
+      body: isLoading ? ListView.builder(
         itemCount: daysList.length,
-          itemBuilder: (context, index) {
+        itemBuilder: (context, index) {
           final day = daysList[index];
-            return Card(
+          return Card(
               child: ListTile(
                 onTap: () {},
-                title: Text(daysList[index].dzien_tygodnia),
+                title: Text(day.dzien_tygodnia),
                 subtitle: Text("xd"),
               ),
             );
           },
-      ),
+      ) : Center(child: CircularProgressIndicator())
     );
   }
 }
