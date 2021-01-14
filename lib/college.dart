@@ -14,6 +14,12 @@ class College extends StatefulWidget {
 
 class _CollegeState extends State<College> {
 
+  List<Course> courses = [
+    Course(name: 'Informatyka'),
+    Course(name: 'Matematyka'),
+    Course(name: 'Mechatronika'),
+    Course(name: 'Finanse i rachunkowość')
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +31,22 @@ class _CollegeState extends State<College> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 40,
-          ),
-          Text('x'),
-        ],
+      body: ListView.builder(
+        itemCount: courses.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                onTap: () {},
+                title: Text(courses[index].name),
+              ),
+            );
+          },
       ),
     );
   }
+}
+
+class Course {
+  String name;
+  Course({this.name});
 }
