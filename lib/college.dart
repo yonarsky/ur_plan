@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'griddashboard.dart';
-
+import 'database_provider.dart';
 
 class College extends StatefulWidget {
   College({Key key, this.title}) : super(key: key);
@@ -15,11 +15,30 @@ class College extends StatefulWidget {
 class _CollegeState extends State<College> {
 
   List<Course> courses = [
-    Course(name: 'Informatyka'),
-    Course(name: 'Matematyka'),
-    Course(name: 'Mechatronika'),
-    Course(name: 'Finanse i rachunkowość')
+    Course(name: 'Informatyka', id: '1'),
+    Course(name: 'Matematyka', id: '2'),
+    Course(name: 'Mechatronika', id: '3'),
+    Course(name: 'Finanse i rachunkowość', id: '4')
   ];
+
+  bool isLoading;
+  List<Days> daysList;
+
+  @override
+  void initState() {
+    super.initState();
+    isLoading = true;
+    fetchDays();
+  }
+
+  void fetchDays() async {
+    setState(() => isLoading = true);
+    final tmpList = await DatabaseProvider.db.getAllDays();
+    setState(() {
+      isLoading = false;
+      daysList = tmpList;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +51,14 @@ class _CollegeState extends State<College> {
         elevation: 0,
       ),
       body: ListView.builder(
-        itemCount: courses.length,
+        itemCount: daysList.length,
           itemBuilder: (context, index) {
+          final day = daysList[index];
             return Card(
               child: ListTile(
                 onTap: () {},
-                title: Text(courses[index].name),
+                title: Text(daysList[index].dzien_tygodnia),
+                subtitle: Text("xd"),
               ),
             );
           },
@@ -48,5 +69,6 @@ class _CollegeState extends State<College> {
 
 class Course {
   String name;
-  Course({this.name});
+  String id;
+  Course({this.name, this.id});
 }
