@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:ur_plan/course.dart';
 
 class DatabaseProvider {
 
@@ -31,7 +30,7 @@ class DatabaseProvider {
     List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await new File(path).writeAsBytes(bytes);
 
-    return await openDatabase(path);
+    return await openDatabase(path, version: 1);
   }
 
   Future<List<Courses>> getAllCourses(college) async {
@@ -40,15 +39,17 @@ class DatabaseProvider {
     List<Courses> list = response.map(
             (s) => Courses.fromMap(s)
     ).toList();
+    db.close();
     return list;
   }
 
-  Future<List<Subjects>> getYears(id_kier) async {
+  Future<List<Subjects>> getYears(idKier) async {
     final db = await database;
-    var response = await db.rawQuery('SELECT * FROM zajecia WHERE id_kierunek LIKE ? GROUP BY rok', ['$id_kier']);
+    var response = await db.rawQuery('SELECT * FROM zajecia WHERE id_kierunek LIKE ? GROUP BY rok', ['$idKier']);
     List<Subjects> list = response.map(
             (s) => Subjects.fromMap(s)
     ).toList();
+    db.close();
     return list;
   }
 }
