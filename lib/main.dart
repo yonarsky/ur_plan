@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'college.dart';
+import 'course.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
     '/': (context) => MyHomePage(),
     '/college': (context) => College(),
+    '/course': (context) => Course(),
   },
   title: 'Plan zajęć UR',
   theme: ThemeData(

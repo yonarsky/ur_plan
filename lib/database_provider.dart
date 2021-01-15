@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:ur_plan/course.dart';
 
 class DatabaseProvider {
 
@@ -33,30 +34,83 @@ class DatabaseProvider {
     return await openDatabase(path);
   }
 
-  Future<List<Days>> getAllDays() async {
+  Future<List<Courses>> getAllCourses(college) async {
     final db = await database;
-    var response = await db.query('dni');
-    List<Days> list = response.map(
-            (s) => Days.fromMap(s)
+    var response = await db.rawQuery('SELECT * FROM kierunki WHERE id_kierunki LIKE ?', ['%$college%']);
+    List<Courses> list = response.map(
+            (s) => Courses.fromMap(s)
+    ).toList();
+    return list;
+  }
+
+  Future<List<Subjects>> getYears(id_kier) async {
+    final db = await database;
+    var response = await db.rawQuery('SELECT * FROM zajecia WHERE id_kierunek LIKE ? GROUP BY rok', ['$id_kier']);
+    List<Subjects> list = response.map(
+            (s) => Subjects.fromMap(s)
     ).toList();
     return list;
   }
 }
 
-class Days {
-  final int id_dnia;
-  final String dzien_tygodnia;
 
-  Days({this.id_dnia, this.dzien_tygodnia});
 
-  factory Days.fromMap(
-      Map<String, dynamic> map) => new Days(
-      id_dnia: map["id_dnia"],
-      dzien_tygodnia: map["dzien_tygodnia"]
+class Courses {
+  final String id_kierunki;
+  final String nazwa_kierunku;
+
+  Courses({this.id_kierunki, this.nazwa_kierunku});
+
+  factory Courses.fromMap(
+      Map<String, dynamic> map) => new Courses(
+      id_kierunki: map["id_kierunki"],
+      nazwa_kierunku: map["nazwa_kierunku"]
   );
 
   Map<String, dynamic> toMap() => {
+    "id_kierunki": id_kierunki,
+    "nazwa_kierunku": nazwa_kierunku,
+  };
+}
+
+class Subjects {
+  final int id;
+  final int id_przedmiot;
+  final String id_kierunek;
+  final int id_dnia;
+  final int id_typu;
+  final int id_prowadzacy;
+  final int id_sala;
+  final String tydzen;
+  final String godzina;
+  final int rok;
+
+  Subjects({this.id, this.id_dnia, this.godzina, this.id_kierunek, this.id_prowadzacy, this.id_przedmiot, this.id_sala, this.id_typu, this.rok, this.tydzen});
+
+  factory Subjects.fromMap(
+      Map<String, dynamic> map) => new Subjects(
+      id: map["id"],
+      id_przedmiot: map["id_przedmiot"],
+      id_kierunek: map["id_kierunek"],
+      id_dnia: map["id_dnia"],
+      id_typu: map["id_typu"],
+      id_prowadzacy: map["id_prowadzacy"],
+      id_sala: map["id_sala"],
+      tydzen: map["tydzen"],
+      godzina: map["godzina"],
+      rok: map["rok"]
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id": id,
+    "id_przedmiot": id_przedmiot,
+    "id_kierunek": id_kierunek,
     "id_dnia": id_dnia,
-    "dzien_tygodnia": dzien_tygodnia,
+    "id_typu": id_typu,
+    "id_prowadzacy": id_prowadzacy,
+    "id_sala": id_sala,
+    "tydzen": tydzen,
+    "godzina": godzina,
+    "rok": rok
   };
 }

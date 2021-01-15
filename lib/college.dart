@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'griddashboard.dart';
 import 'database_provider.dart';
 
+String courseId;
+String courseName;
+
 class College extends StatefulWidget {
   College({Key key, this.title}) : super(key: key);
 
@@ -14,30 +17,24 @@ class College extends StatefulWidget {
 }
 
 class _CollegeState extends State<College> {
-
-  List<Course> courses = [
-    Course(name: 'Informatyka', id: '1'),
-    Course(name: 'Matematyka', id: '2'),
-    Course(name: 'Mechatronika', id: '3'),
-    Course(name: 'Finanse i rachunkowość', id: '4')
-  ];
+  String letter = collegeLetter;
 
   bool isLoading;
-  List<Days> daysList = new List();
+  List<Courses> coursesList = new List();
 
 
-  void fetchDays() async {
+  void fetchCourses(String collegeLetter) async {
     setState(() => isLoading = true);
-    final tmpList = await DatabaseProvider.db.getAllDays();
+    final tmpList = await DatabaseProvider.db.getAllCourses(collegeLetter);
     setState(() {
       isLoading = false;
-      daysList = tmpList;
+      coursesList = tmpList;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    fetchDays();
+    fetchCourses(letter);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
@@ -46,24 +43,22 @@ class _CollegeState extends State<College> {
         elevation: 0,
       ),
       body: isLoading ? ListView.builder(
-        itemCount: daysList.length,
+        itemCount: coursesList.length,
         itemBuilder: (context, index) {
-          final day = daysList[index];
+          final course = coursesList[index];
           return Card(
               child: ListTile(
-                onTap: () {},
-                title: Text(day.dzien_tygodnia),
-                subtitle: Text("xd"),
+                onTap: () {
+                  courseId = course.id_kierunki;
+                  courseName = course.nazwa_kierunku;
+                  Navigator.pushNamed(context, '/course');
+                  },
+                title: Text(course.nazwa_kierunku),
+                subtitle: Text(course.id_kierunki),
               ),
             );
           },
       ) : Center(child: CircularProgressIndicator())
     );
   }
-}
-
-class Course {
-  String name;
-  String id;
-  Course({this.name, this.id});
 }
