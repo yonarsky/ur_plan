@@ -16,20 +16,57 @@ class Timetable extends StatefulWidget {
 
 class _TimetableState extends State<Timetable> {
 
-  //bool isLoading;
-  //List<Subjects> yearsList = new List();
+  bool isLoading;
+  List<Days> daysList = new List();
 
 
-  /*void fetchYears(courseId) async {
+  void fetchDays() async {
     setState(() => isLoading = true);
-    final tmpList = await DatabaseProvider.db.getYears(courseId);
+    final tmpList = await DatabaseProvider.db.getDays();
     setState(() {
       isLoading = false;
-      yearsList = tmpList;
+      daysList = tmpList;
     });
-  }*/
+  }
 
   List<bool> isSelected = [true, false];
+
+  /*Widget buildExpPanel () {
+    ExpansionPanelList(expansionCallback: (int index, bool isExpanded) {
+      setState(() {
+        daysList[index].isExpanded =!daysList[index].isExpanded;
+      });
+    },
+      children: daysList.map<Days>((Days item) {
+        return ExpansionPanel( headerBuilder: (BuildContext context, bool isExpanded) {
+          return ListTile(
+              title: Text(daysList.dzien_tygodnia),
+            );
+          },
+          body: ListTile(
+            title: Text('Item 1 child'),
+            subtitle: Text('Details goes here'),
+          ),
+        );
+      }),
+    );
+  }*/
+
+  Widget list() {
+    return (ListView.builder(
+      itemCount: daysList.length,
+      itemBuilder: (context, index) {
+        final days = daysList[index];
+        return Card(
+          child: ListTile(
+            onTap: () {},
+            title: Text(days.dzien_tygodnia),
+          ),
+        );
+      },
+    )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +78,9 @@ class _TimetableState extends State<Timetable> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: ListView(children: <Widget>[
-          Container(
+        body: Column(
+          children: <Widget> [
+           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.all(10),
             //padding: EdgeInsets.all(20),
@@ -75,7 +113,9 @@ class _TimetableState extends State<Timetable> {
               },
             ),
           ),
-        ])
+            Expanded(child: list())
+        ]),
+        //child: list();
     );
   }
 }

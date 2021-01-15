@@ -52,6 +52,16 @@ class DatabaseProvider {
     db.close();
     return list;
   }
+
+  Future<List<Days>> getDays() async {
+    final db = await database;
+    var response = await db.rawQuery('SELECT * FROM dni');
+    List<Days> list = response.map(
+            (s) => Days.fromMap(s)
+    ).toList();
+    db.close();
+    return list;
+  }
 }
 
 
@@ -188,5 +198,24 @@ class Teachers {
   Map<String, dynamic> toMap() => {
     "id_prowadzacy": id_prowadzacy,
     "imie_nazwisko": imie_nazwisko,
+  };
+}
+
+class Days {
+  final int id_dnia;
+  final String dzien_tygodnia;
+  bool isExpanded;
+
+  Days({this.id_dnia, this.dzien_tygodnia, this.isExpanded: false});
+
+  factory Days.fromMap(
+      Map<String, dynamic> map) => new Days(
+    id_dnia: map["id_dnia"],
+    dzien_tygodnia: map["dzien_tygodnia"],
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id_dnia": id_dnia,
+    "dzien_tygodnia": dzien_tygodnia,
   };
 }
