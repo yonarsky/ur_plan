@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'college.dart';
 import 'course.dart';
+import 'timetable.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
@@ -9,6 +10,7 @@ void main() => runApp(MaterialApp(
     '/': (context) => MyHomePage(),
     '/college': (context) => College(),
     '/course': (context) => Course(),
+    '/timetable': (context) => Timetable(),
   },
   title: 'Plan zajęć UR',
   theme: ThemeData(

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'database_provider.dart';
 import 'college.dart';
 
+String id;
+int year;
+String nameCourse;
 
 class Course extends StatefulWidget {
   Course({Key key, this.title}) : super(key: key);
@@ -16,7 +19,6 @@ class Course extends StatefulWidget {
 
 class _CourseState extends State<Course> {
 
-  String id = courseId;
   String name = courseName;
 
   bool isLoading;
@@ -34,7 +36,7 @@ class _CourseState extends State<Course> {
 
   @override
   Widget build(BuildContext context) {
-    fetchYears(id);
+    fetchYears(courseId);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue[900],
@@ -48,7 +50,12 @@ class _CourseState extends State<Course> {
             final years = yearsList[index];
             return Card(
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  id = courseId;
+                  year = years.rok;
+                  nameCourse = name;
+                  Navigator.pushNamed(context, '/timetable');
+                },
                 title: Text("Rok " + years.rok.toString()),
               ),
             );

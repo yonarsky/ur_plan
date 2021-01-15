@@ -115,3 +115,78 @@ class Subjects {
     "rok": rok
   };
 }
+
+class GroupType {
+  final int id_typu;
+  final String typ_grupy;
+
+  GroupType({this.id_typu, this.typ_grupy});
+
+  factory GroupType.fromMap(
+      Map<String, dynamic> map) => new GroupType(
+      id_typu: map["id_typu"],
+      typ_grupy: map["typ_grupy"]
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id_typu": id_typu,
+    "typ_grupy": typ_grupy
+  };
+}
+
+class Room {
+  final int id_sali;
+  final String numer_sali;
+
+  Room({this.id_sali, this.numer_sali});
+
+  factory Room.fromMap(
+      Map<String, dynamic> map) => new Room(
+      id_sali: map["id_sali"],
+      numer_sali: map["numer_sali"]
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id_sali": id_sali,
+    "numer_sali": numer_sali
+  };
+}
+
+class Subject {
+  final int id_przedmioty;
+  final String nazwa_przedmiotu;
+  final String skrot;
+
+  Subject({this.id_przedmioty, this.nazwa_przedmiotu, this.skrot});
+
+  factory Subject.fromMap(
+      Map<String, dynamic> map) => new Subject(
+      id_przedmioty: map["id_przedmioty"],
+      nazwa_przedmiotu: map["nazwa_przedmiotu"],
+      skrot: map["skrot"]
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id_przedmioty": id_przedmioty,
+    "nazwa_przedmiotu": nazwa_przedmiotu,
+    "skrot": skrot
+  };
+}
+
+class Teachers {
+  final int id_prowadzacy;
+  final String imie_nazwisko;
+
+  Teachers({this.id_prowadzacy, this.imie_nazwisko});
+
+  factory Teachers.fromMap(
+      Map<String, dynamic> map) => new Teachers(
+      id_prowadzacy: map["id_prowadzacy"],
+      imie_nazwisko: map["imie_nazwisko"],
+  );
+
+  Map<String, dynamic> toMap() => {
+    "id_prowadzacy": id_prowadzacy,
+    "imie_nazwisko": imie_nazwisko,
+  };
+}
