@@ -122,6 +122,7 @@ class _TimetableState extends State<Timetable> {
               ],
               onPressed: (int newIndex) {
                 setState(() {
+                  if (isSelected[newIndex] == false){
                   for (int index = 0; index < isSelected.length; index++) {
                     if (index == newIndex) {
                       isSelected[index] = true;
@@ -133,7 +134,8 @@ class _TimetableState extends State<Timetable> {
                   week1 = week2;
                   week2 = tmp;
                   fetchLessons(idC, year, week1);
-                });
+                }
+              });
               },
             ),
           ),
