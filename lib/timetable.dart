@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'database_provider.dart';
 import 'course.dart';
-//import 'package:grouped_list/grouped_list.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-String week1 = 'A';
-String week2 = 'B';
+String week1;
+String week2;
 
 
 class Timetable extends StatefulWidget {
@@ -24,6 +23,11 @@ class _TimetableState extends State<Timetable> {
   bool isLoading;
   List<Lessons> lessonsList = new List();
 
+  @override
+  void initState() {
+    week1 = 'A';
+    week2 = 'B';
+  }
 
   void fetchLessons(id, year, week) async {
     setState(() => isLoading = true);
