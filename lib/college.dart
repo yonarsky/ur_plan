@@ -54,7 +54,6 @@ class _CollegeState extends State<College> {
                   Navigator.pushNamed(context, '/course');
                   },
                 title: Text(course.nazwa_kierunku),
-                subtitle: Text(course.id_kierunki),
               ),
             );
           },

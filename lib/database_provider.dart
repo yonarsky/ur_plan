@@ -53,6 +53,16 @@ class DatabaseProvider {
     return list;
   }
 
+  Future<List<Lessons>> getLessons(idKier, rok, tydz) async {
+    final db = await database;
+    var response = await db.rawQuery('select z.id_dnia, d.dzien_tygodnia, z.godzina, p.nazwa_przedmiotu, p.skrot, w.imie_nazwisko, t.typ_grupy, s.numer_sali, z.tydzien from zajecia as z, dni as d, kierunki as k, prowadzacy as w, przedmioty as p, sale as s, typy_grup as t where z.id_kierunek = k.id_kierunki and z.id_przedmiot = p.id_przedmioty and  z.id_dnia = d.id_dnia and z.id_sala = s.id_sali and z.id_prowadzacy = w.id_prowadzacy and z.id_typu = t.id_typu and z.id_kierunek LIKE ? and z.rok LIKE ? and (z.tydzien LIKE ? or z.tydzien is null)', ['$idKier', '$rok', '%$tydz%']);
+    List<Lessons> list = response.map(
+            (s) => Lessons.fromMap(s)
+    ).toList();
+    db.close();
+    return list;
+  }
+
   Future<List<Days>> getDays() async {
     final db = await database;
     var response = await db.rawQuery('SELECT * FROM dni');
@@ -62,6 +72,55 @@ class DatabaseProvider {
     db.close();
     return list;
   }
+}
+
+class Lessons {
+  final String dzien_tygodnia;
+  final String godzina;
+  final String nazwa_przedmiotu;
+  final String skrot;
+  final String imie_nazwisko;
+  final String typ_grupy;
+  final String numer_sali;
+  final String tydzien;
+  final int id_dnia;
+
+  Lessons(
+      {this.dzien_tygodnia,
+      this.godzina,
+      this.nazwa_przedmiotu,
+      this.skrot,
+      this.imie_nazwisko,
+      this.typ_grupy,
+      this.numer_sali,
+      this.tydzien,
+      this.id_dnia});
+
+  factory Lessons.fromMap(
+      Map<String, dynamic> map) => new Lessons(
+      dzien_tygodnia: map["dzien_tygodnia"],
+      godzina: map["godzina"],
+      nazwa_przedmiotu: map["nazwa_przedmiotu"],
+      skrot: map["skrot"],
+      imie_nazwisko: map["imie_nazwisko"],
+      typ_grupy: map["typ_grupy"],
+      numer_sali: map["numer_sali"],
+      tydzien: map["tydzien"],
+      id_dnia: map["id_dnia"]
+  );
+
+  Map<String, dynamic> toMap() => {
+    "dzien_tygodnia": dzien_tygodnia,
+    "godzina": godzina,
+    "nazwa_przedmiotu": nazwa_przedmiotu,
+    "skrot": skrot,
+    "imie_nazwisko": imie_nazwisko,
+    "typ_grupy": typ_grupy,
+    "numer_sali": numer_sali,
+    "tydzien": tydzien,
+    "id_dnia": id_dnia
+  };
+
 }
 
 
@@ -204,9 +263,8 @@ class Teachers {
 class Days {
   final int id_dnia;
   final String dzien_tygodnia;
-  bool isExpanded;
 
-  Days({this.id_dnia, this.dzien_tygodnia, this.isExpanded: false});
+  Days({this.id_dnia, this.dzien_tygodnia});
 
   factory Days.fromMap(
       Map<String, dynamic> map) => new Days(

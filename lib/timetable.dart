@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'database_provider.dart';
 import 'course.dart';
+//import 'package:grouped_list/grouped_list.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+
+String week1 = 'A';
+String week2 = 'B';
 
 
 class Timetable extends StatefulWidget {
@@ -17,50 +22,61 @@ class Timetable extends StatefulWidget {
 class _TimetableState extends State<Timetable> {
 
   bool isLoading;
-  List<Days> daysList = new List();
+  List<Lessons> lessonsList = new List();
 
 
-  void fetchDays() async {
+  void fetchLessons(id, year, week) async {
     setState(() => isLoading = true);
-    final tmpList = await DatabaseProvider.db.getDays();
+    final tmpList = await DatabaseProvider.db.getLessons(id, year, week);
     setState(() {
       isLoading = false;
-      daysList = tmpList;
+      lessonsList = tmpList;
     });
   }
 
   List<bool> isSelected = [true, false];
 
-  /*Widget buildExpPanel () {
-    ExpansionPanelList(expansionCallback: (int index, bool isExpanded) {
-      setState(() {
-        daysList[index].isExpanded =!daysList[index].isExpanded;
-      });
-    },
-      children: daysList.map<Days>((Days item) {
-        return ExpansionPanel( headerBuilder: (BuildContext context, bool isExpanded) {
-          return ListTile(
-              title: Text(daysList.dzien_tygodnia),
-            );
-          },
-          body: ListTile(
-            title: Text('Item 1 child'),
-            subtitle: Text('Details goes here'),
-          ),
-        );
-      }),
-    );
-  }*/
+
 
   Widget list() {
-    return (ListView.builder(
-      itemCount: daysList.length,
-      itemBuilder: (context, index) {
-        final days = daysList[index];
+    return (StickyGroupedListView<dynamic, String>(
+      elements: lessonsList,
+      groupBy: (lessons) {
+        return lessons.id_dnia.toString();
+      },
+      groupSeparatorBuilder: (lessons) => Text(
+        lessons.dzien_tygodnia,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      floatingHeader: true,
+      itemBuilder: (context, dynamic lessons) {
+
         return Card(
+
           child: ListTile(
-            onTap: () {},
-            title: Text(days.dzien_tygodnia),
+            onTap: () {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(lessons.nazwa_przedmiotu),
+                duration: Duration(seconds: 2),
+              ));
+            },
+            leading: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(lessons.godzina),
+              ],
+            ),
+            title: Text(lessons.skrot),
+            subtitle: Text(lessons.imie_nazwisko + ", " + lessons.numer_sali),
+            trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(lessons.typ_grupy),
+              ],
+            ),
+            isThreeLine: true,
+            hoverColor: Colors.blue[900],
           ),
         );
       },
@@ -70,7 +86,7 @@ class _TimetableState extends State<Timetable> {
 
   @override
   Widget build(BuildContext context) {
-    //fetchYears(courseId);
+    fetchLessons(idC, year, week1);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue[900],
@@ -109,6 +125,10 @@ class _TimetableState extends State<Timetable> {
                       isSelected[index] = false;
                     }
                   }
+                  String tmp = week1;
+                  week1 = week2;
+                  week2 = tmp;
+                  fetchLessons(idC, year, week1);
                 });
               },
             ),

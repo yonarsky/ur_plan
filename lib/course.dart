@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_provider.dart';
 import 'college.dart';
 
-String id;
+String idC;
 int year;
 String nameCourse;
 
@@ -51,7 +51,7 @@ class _CourseState extends State<Course> {
             return Card(
               child: ListTile(
                 onTap: () {
-                  id = courseId;
+                  idC = courseId;
                   year = years.rok;
                   nameCourse = name;
                   Navigator.pushNamed(context, '/timetable');

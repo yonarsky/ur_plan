@@ -26,6 +26,8 @@ dependencies:
   google_fonts: ^1.1.1
   sqflite: any
   path_provider: any
+  grouped_list: ^3.2.3
+  sticky_grouped_list: ^1.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
